@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-public class Program
+public class SistemaDeEventos
 {
     static List<Evento> eventos = new List<Evento>();
     static List<Contato> contatos = new List<Contato>();
@@ -178,7 +177,6 @@ public class Program
             Console.Write("Escolha uma opção: ");
             string escolhaPropriedade = Console.ReadLine();
 
-            // Capturar nova informação e atualizar a propriedade correspondente
             switch (escolhaPropriedade)
             {
                 case "1":
@@ -270,7 +268,6 @@ public class Program
     {
         Console.WriteLine("=== Exportar Dados de um Evento para .txt ===");
 
-        // Exibir lista de eventos para o usuário escolher qual exportar
         Console.WriteLine("Eventos Disponíveis:");
         foreach (Evento evento in eventos)
         {
@@ -280,12 +277,10 @@ public class Program
         Console.Write("Insira o ID do evento que deseja exportar: ");
         string idEvento = Console.ReadLine();
 
-        // Encontrar o evento na lista pelo ID
         Evento eventoExportar = eventos.Find(e => e.Id == idEvento);
 
         if (eventoExportar != null)
         {
-            // Construir a string com os dados do evento
             string dadosEvento = $"ID: {eventoExportar.Id}\n" +
                                  $"Título: {eventoExportar.Titulo}\n" +
                                  $"Data: {eventoExportar.Data.ToString("dd/MM/yyyy")}\n" +
@@ -296,12 +291,10 @@ public class Program
                                  $"Público Alvo: {eventoExportar.PublicoAlvo}\n" +
                                  $"Contato Responsável: {eventoExportar.Responsavel.Nome}, {eventoExportar.Responsavel.Telefone}, {eventoExportar.Responsavel.Email}";
 
-            // Especificar o caminho do arquivo de texto
             string caminhoArquivo = $"evento_{eventoExportar.Id}.txt";
 
             try
             {
-                // Escrever os dados do evento no arquivo
                 File.WriteAllText(caminhoArquivo, dadosEvento);
                 Console.WriteLine($"Os dados do evento foram exportados para o arquivo: {caminhoArquivo}");
             }
@@ -317,51 +310,3 @@ public class Program
     }
 }
 
-public class Contato
-{
-    public string Nome;
-    public string Telefone;
-    public string Email;
-
-    public Contato(string nome, string telefone, string email)
-    {
-        Nome = nome;
-        Telefone = telefone;
-        Email = email;
-    }
-}
-
-public class Evento
-{
-    public string Id;
-    public string Titulo;
-    public DateTime Data;
-    public DateTime HoraIni;
-    public DateTime HoraFim;
-    public string Descricao;
-    public int QuantidadePessoas;
-    public string PublicoAlvo;
-    public Contato Responsavel;
-
-    public Evento(string titulo, DateTime data, DateTime horaInicial, DateTime horaFinal, string descricao,
-                  int quantidadePessoas, string publicoAlvo, Contato contatoResponsavel)
-    {
-        Titulo = titulo;
-        Data = data;
-        HoraIni = horaInicial;
-        HoraFim = horaFinal;
-        Descricao = descricao;
-        QuantidadePessoas = quantidadePessoas;
-        PublicoAlvo = publicoAlvo;
-        Responsavel = contatoResponsavel;
-
-        Id = GerarId();
-    }
-
-    private string GerarId()
-    {
-        Random random = new Random();
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        return new string(Enumerable.Repeat(chars, 6).Select(s => s[random.Next(s.Length)]).ToArray());
-    }
-}
